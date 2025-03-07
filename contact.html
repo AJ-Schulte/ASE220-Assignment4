@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Tohoney - Shop</title>
+    <title>Tohoney - Contact</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="assets/images/favicon.png">
@@ -41,7 +41,23 @@
     <div class="preloader-wrap">
         <div class="spinner"></div>
     </div>
-   
+    <!-- search-form here -->
+    <div class="search-area flex-style">
+        <span class="closebar">Close</span>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2 col-12">
+                    <div class="search-form">
+                        <form action="search">
+                            <input type="text" placeholder="Search Here...">
+                            <button><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- search-form here -->
     <!-- header-area start -->
     <header class="header-area">
         <div class="header-top bg-2">
@@ -69,8 +85,8 @@
                     <div class="col-lg-7 d-none d-lg-block">
                         <nav class="mainmenu">
                             <ul class="d-flex">
-                                <li>
-                                    <a href="index.html">Shop<i class="fa fa-angle-down"></i></a>
+                                <li class="active">
+                                    <a href="index.html">Shop <i class="fa fa-angle-down"></i></a>
                                 </li>
                                 <li><a href="contact.html">Contact</a></li>
                             </ul>
@@ -106,53 +122,83 @@
     </header>
     <!-- header-area end -->
     <!-- .breadcumb-area start -->
-    <!-- .breadcumb-area end -->
-    <!-- product-area start -->
-    <div class="product-area pt-100">
+    <div class="breadcumb-area bg-img-4 ptb-100">
         <div class="container">
             <div class="row">
-                <div class="col-sm-9 col-lg-10">
-                    <div class="product-menu">
-                        <ul class="nav">
+                <div class="col-12">
+                    <div class="breadcumb-wrap text-center">
+                        <h2>Contact Us</h2>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><span>Contact</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .breadcumb-area end -->
+    <!-- contact-area start -->
+    <div class="google-map">
+        <div class="contact-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.9147703055!2d-74.11976314309273!3d40.69740344223377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sbd!4v1547528325671" allowfullscreen></iframe>
+        </div>
+    </div>
+    <div class="contact-area ptb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-12">
+                    <div class="contact-form form-style">
+                        <div class="cf-msg"></div>
+                        <form action="mail.php" method="post" id="cf">
+                            <div class="row">
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" placeholder="Name" id="fname" name="fname">
+                                </div>
+                                <div class="col-12  col-sm-6">
+                                    <input type="text" placeholder="Email" id="email" name="email">
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" placeholder="Subject" id="subject" name="subject">
+                                </div>
+                                <div class="col-12">
+                                    <textarea class="contact-textarea" placeholder="Message" id="msg" name="msg"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button id="submit" name="submit">SEND MESSAGE</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <div class="contact-wrap">
+                        <ul>
                             <li>
-                                <a class="active" href="newItem.html">Add product</a>
+                                <i class="fa fa-home"></i> Address:
+                                <p>1234, Contrary to popular Sed ut perspiciatis unde 1234</p>
+                            </li>
+                            <li>
+                                <i class="fa fa-phone"></i> Email address:
+                                <p>
+                                    <span>info@yoursite.com </span>
+                                    <span>info@yoursite.com </span>
+                                </p>
+                            </li>
+                            <li>
+                                <i class="fa fa-envelope"></i> phone number:
+                                <p>
+                                    <span>+0123456789</span>
+                                    <span>+1234567890</span>
+                                </p>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="tab-content">
-                <div class="tab-pane active" id="all">
-                    <ul class="row">
-                        <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
-                            <div class="product-wrap">
-                                <div class="product-img">
-                                    <img src="assets/images/product/15.jpg" alt="">
-                                    <div class="product-icon flex-style">
-                                        <ul>
-                                            <li><a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <h3><a class="product-name" href="single-product.html"></a></h3>
-                                    <p class="pull-left price">$</p>
-                                    <button type="button" id="edit" class="active pull-right">Delete</button>
-                                    <span class="pull-right">&nbsp;</span>
-                                    <button type="button" id="edit" class="active pull-right">Update</button>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="col-12 text-center">
-                            <a id="loadmore" class="loadmore-btn" href="javascript:void(0);">Load More</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </div>
-    <!-- product-area end -->
+    <!-- contact-area end -->
     <!-- start social-newsletter-section -->
     <section class="social-newsletter-section">
         <div class="container">
@@ -233,59 +279,6 @@
         </div>
     </div>
     <!-- .footer-area end -->
-    <!-- Modal area start -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="modal-body d-flex">
-                    <div class="product-single-img w-50">
-                        <img src="" alt=""> 
-                    </div>
-                    <div class="product-single-content w-50">
-                        <h3 class="name"></h3>
-                        <div class="rating-wrap fix">
-                            <span class="pull-left price">$</span>
-                            <span class="pull-right condition">Condition: </span>
-                        </div>
-                        <p class="description"></p>
-                        <ul>
-                            <li class="location pull-left">Location: </li>
-                            <li class="dateListed pull-right">Date Listed: </li> 
-                        </ul>
-                        <br />
-                        <ul class="input-style">
-                            <li class="pull-right"><a href="cart.html">Add to Cart</a></li>
-                        </ul>
-                        <ul class="cetagory">
-                            <li>Categories:</li>
-                            <li><a href="#"></a></li>
-                        </ul>
-                        <ul class="socil-icon contact">
-                            <li>Seller Contact Information:</li>
-                            <li>Name: </li>
-                            <li>Email: </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal area start -->
-    <!-- index main script -->
-    <script>
-        const database = "https://jsonblob.com/api/1347697935206506496";
-        async function getText(file) {
-            let response = await fetch(file);
-            console.log(response);
-            let content = await response.text();
-            console.log(content);
-        }
-        getText(database);
-
-    </script>
     <!-- jquery latest version -->
     <script src="assets/js/vendor/jquery-2.2.4.min.js"></script>
     <!-- bootstrap js -->
