@@ -62,7 +62,6 @@
                     <div class="col-lg-3 col-md-7 col-sm-6 col-6">
                         <div class="logo">
                             <a href="index.html">
-                        <img src="assets/images/logo.png" alt="">
                         </a>
                         </div>
                     </div>
@@ -123,11 +122,12 @@
             </div>
             <div class="tab-content">
                 <div class="tab-pane active" id="all">
-                    <ul class="row">
+                    <ul class="row product-list">
+                        <!-- Sample Product
                         <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                             <div class="product-wrap">
                                 <div class="product-img">
-                                    <img src="assets/images/product/15.jpg" alt="">
+                                    <img src="" alt="">
                                     <div class="product-icon flex-style">
                                         <ul>
                                             <li><a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
@@ -144,16 +144,15 @@
                                 </div>
                             </div>
                         </li>
+                        -->
                     </ul>
-                    <div class="row">
+                    <div class="row pagination">
                         <div class="col-12">
                             <div class="pagination-wrapper text-center">
                                 <ul class="page-numbers">
-                                    <li><a class="prev page-numbers" href="#"><i class="fa fa-angle-left"></i></a></li>
-                                    <li><span class="page-numbers current" href="#">1</span></li>
-                                    <li><a class="page-numbers" href="#">2</a></li>
-                                    <li><a class="page-numbers" href="#">3</a></li>
-                                    <li><a class="next page-numbers" href="#"><i class="fa fa-angle-right"></i></a></li>
+                                    <li><a id="prev-page" class="prev page-numbers" href="#"><i class="fa fa-angle-left"></i></a></li>
+                                    <li><span id="page-number" class="page-numbers current" href="#">1</span></li>
+                                    <li><a id="next-page" class="next page-numbers" href="#"><i class="fa fa-angle-right"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -252,31 +251,31 @@
                 </button>
                 <div class="modal-body d-flex">
                     <div class="product-single-img w-50">
-                        <img src="" alt=""> 
+                        <img src="" alt="" id="modal-product-image"> 
                     </div>
                     <div class="product-single-content w-50">
-                        <h3 class="name"></h3>
+                        <h3 class="name" id="modal-product-name"></h3>
                         <div class="rating-wrap fix">
-                            <span class="pull-left price">$</span>
-                            <span class="pull-right condition">Condition: </span>
+                            <span class="pull-left price" id="modal-product-price"></span>
+                            <span class="pull-right condition" id="modal-product-condition">Condition: </span>
                         </div>
-                        <p class="description"></p>
+                        <p class="description" id="modal-product-desctiption"></p>
                         <ul>
-                            <li class="location pull-left">Location: </li>
-                            <li class="dateListed pull-right">Date Listed: </li> 
+                            <li class="location pull-left" id="modal-product-location">Location: </li>
+                            <li class="dateListed pull-right" id="modal-product-date">Date Listed: </li> 
                         </ul>
                         <br />
                         <ul class="input-style">
-                            <li class="pull-right"><a href="cart.html">Add to Cart</a></li>
+                            <li class="pull-right"><a id="cart-button" class="add-to-cart">Add to Cart</a></li>
                         </ul>
                         <ul class="cetagory">
                             <li>Categories:</li>
-                            <li><a href="#"></a></li>
+                            <li id="modal-product-category"></li>
                         </ul>
                         <ul class="socil-icon contact">
                             <li>Seller Contact Information:</li>
-                            <li>Name: </li>
-                            <li>Email: </li>
+                            <li id="modal-seller-name">Name: </li>
+                            <li id="modal-seller-email">Email: </li>
                         </ul>
                     </div>
                 </div>
@@ -285,17 +284,6 @@
     </div>
     <!-- Modal area start -->
     <!-- index main script -->
-    <script>
-        const database = "https://jsonblob.com/api/1347697935206506496";
-        async function getText(file) {
-            let response = await fetch(file);
-            console.log(response);
-            let content = await response.text();
-            console.log(content);
-        }
-        getText(database);
-
-    </script>
     <!-- jquery latest version -->
     <script src="assets/js/vendor/jquery-2.2.4.min.js"></script>
     <!-- bootstrap js -->
@@ -322,6 +310,202 @@
     <script src="assets/js/jquery-ui.min.js"></script>
     <!-- main js -->
     <script src="assets/js/scripts.js"></script>
+    <script>
+        const itemsPerPage = 8;  // Items per page
+        let currentPage = 1;  // Start on page 1
+        let allItems = []; // Store all items from the JSON
+        const jsonURL = 'https://jsonblob.com/api/jsonBlob/1347697935206506496';
+
+        // Function to load items from JSON
+        function loadItems() {
+            $.getJSON(jsonURL, function(data) {
+                allItems = data.items; // Store all the items in an array
+                showPage(currentPage);  // Show the first page when data is loaded
+            }).fail(function() {
+                console.log("Error loading the JSON data.");
+            });
+        }
+
+        // Function to show items for the current page
+        function showPage(pageNumber) {
+            // Calculate the start and end index for the current page
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const itemsToShow = allItems.slice(startIndex, endIndex); // Get the items for this page
+
+            // Clear the current product list
+            $('.product-list').empty();
+
+            // Add the items to the page
+            itemsToShow.forEach(function(item) {
+                const productHTML = `
+                    <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+                        <div class="product-wrap">
+                            <div class="product-img">
+                                <img src="${item.images[0]}" alt="${item.name}" style="width: 100%; height: auto;">
+                                <div class="product-icon flex-style">
+                                    <ul>
+                                        <li><a class="view-product" data-id="${item.item_id}"><i class="fa fa-eye"></i></a></li>
+                                        <li><a class="add-to-cart" data-id="${item.item_id}"><i class="fa fa-shopping-bag"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a>${item.name}</a></h3>
+                                <p class="price">${item.currency}  $${item.price}</p>
+                                <button type="button" class="active delete" data-id="${item.name}">Delete</button>
+                                <button type="button" class="active update" data-id="${item.item_id}">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                $('.product-list').append(productHTML);
+            });
+
+            // Update the page number text
+            $('#page-number').text(`${pageNumber}`);
+        }
+
+        // Previous page button click
+        $('#prev-page').click(function() {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        });
+
+        // Next page button click
+        $('#next-page').click(function() {
+            const totalPages = Math.ceil(allItems.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        });
+
+        // Initial load
+        $(document).ready(function() {
+            loadItems();
+
+            $(document).on('click', '.view-product', function() {
+                var productId = $(this).data('id');  // Get the product ID from the clicked element
+                console.log('Product ID:', productId);  // Check if the ID is correct
+
+                // Fetch product data from JSON
+                $.ajax({
+                    url: jsonURL,
+                    method: 'GET',
+                    success: function(data) {
+                        // Find the product by item_id
+                        var product = data.items.find(item => item.item_id === productId);
+
+                        if (product) {
+                            // Populate modal with product data
+                            $('#modal-product-image').attr('src', product.images[0]);  // Product image
+                            $('#modal-product-name').text(product.name);  // Product name
+                            $('#modal-product-price').text(product.currency + ' $' + product.price);  // Product price
+                            $('#modal-product-condition').text('Condition: ' + product.condition);  // Product condition
+                            $('#modal-product-description').text(product.description);  // Product description
+                            $('#modal-product-location').text('Location: ' + product.location);  // Product location
+                            $('#modal-product-date').text('Date Listed: ' + product.date_listed);  // Date listed
+                            $('#modal-product-category').text(product.category);  // Product category
+                            $('#modal-seller-name').text('Name: ' + product.seller.name);  // Seller name
+                            $('#modal-seller-email').text('Email: ' + product.seller.contact);  // Seller email
+                            $('#cart-button').attr('data-id', product.item_id);
+
+                            // Trigger the modal to open
+                            $('#exampleModalCenter').modal('show');
+                        } else {
+                            console.log('Product not found');
+                        }
+                    },
+                    error: function() {
+                        console.log('Error loading product data.');
+                    }
+                });
+            });
+
+            $(document).on('click', '.add-to-cart', function() {
+                var productId = $(this).data('id');
+
+                $.ajax({
+                    url: jsonURL,
+                    type: 'GET',
+                    success: function(data) {
+                        updateCart(productId);
+                        
+                    }
+                })
+            });
+
+            $(document).on('click', '.delete', function() {
+                var productId = $(this).data('id');
+
+                $.ajax({
+                    url: jsonURL,
+                    type: 'GET',
+                    success: function(data) {
+                        deleteItem(productId);
+                    }
+                })
+            });
+
+        });
+
+        async function updateCart(productID) {
+            const response = await fetch(jsonURL);
+            const existingData = await response.json();
+            var product = existingData.items[parseInt(productID) - 1];
+            if(!product.in_cart) {
+                product.in_cart = true;
+                alert("You have added " + product.name + " to your cart.");
+            } else {
+                product.in_cart = false;
+                alert("You have removed " + product.name + " from your cart.");
+            }
+            const updateResponse = await fetch(jsonURL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(existingData)
+            });
+
+            const updatedData = await updateResponse.json();
+        }
+
+        // Delete item function (for demonstration)
+        async function deleteItem(itemName) {
+            const response = await fetch(jsonURL);
+            const existingData = await response.json();
+            console.log(itemName);
+
+            for(let i = 0; i < existingData.items.length; i++) {
+                if(existingData.items[i].name == itemName) {
+                    console.log(existingData.items[i].name);
+                    var deletedItem = existingData.items.splice(i, 1);
+                }
+            };
+            
+            console.log(existingData);
+
+            alert(itemName + " has be deleted.");
+            const updateResponse = await fetch(jsonURL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(existingData)
+            });
+            location.reload();
+        }
+
+        // Update item function (for demonstration)
+        function updateItem(itemId) {
+            alert("Item with ID " + itemId + " will be updated.");
+            // Add actual update logic here
+        }
+    </script>
 </body>
 
 </html>

@@ -78,7 +78,6 @@
                     <div class="col-lg-3 col-md-7 col-sm-6 col-6">
                         <div class="logo">
                             <a href="index.html">
-                        <img src="assets/images/logo.png" alt="">
                         </a>
                         </div>
                     </div>
@@ -101,43 +100,9 @@
                     </div>
                 </div>
             </div>
-            <!-- responsive-menu area start -->
-            <div class="responsive-menu-area">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12 d-block d-lg-none">
-                            <ul class="metismenu">
-                                <li>
-                                    <a href="index.html">Home</a>
-                                </li>
-                                <li><a href="about.html">About</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- responsive-menu area start -->
         </div>
     </header>
     <!-- header-area end -->
-    <!-- .breadcumb-area start -->
-    <div class="breadcumb-area bg-img-4 ptb-100">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="breadcumb-wrap text-center">
-                        <h2>Checkout</h2>
-                        <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><span>Checkout</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- .breadcumb-area end -->
     <!-- checkout-area start -->
     <div class="checkout-area ptb-100">
         <div class="container">
@@ -145,88 +110,50 @@
                 <div class="col-lg-8">
                     <div class="checkout-form form-style">
                         <h3>New Item Details</h3>
-                        <form action="create-item">
+                        <form id="checkout-form">
                             <div class="row">
                                 <div class="col-sm-6 col-12">
                                     <p>Name of Item *</p>
-                                    <input type="text">
+                                    <input id="itemName" type="text">
                                 </div>
                                 <div class="col-sm-6 col-12">
                                     <p>Category *</p>
-                                    <input type="text">
+                                    <input id="category" type="text">
                                 </div>
                                 <div class="col-12">
                                     <p>Condition</p>
-                                    <input type="text">
+                                    <input id="condition" type="text">
                                 </div>
                                 <div class="col-sm-6 col-12">
                                     <p>Price *</p>
-                                    <input type="text">
+                                    <input id="price" type="text">
                                 </div>
                                 <div class="col-12">
                                     <p>Seller Name *</p>
-                                    <input type="text">
+                                    <input id="sellerName" type="text">
                                 </div>
                                 <div class="col-sm-6 col-12">
                                     <p>Email Address *</p>
-                                    <input type="email">
+                                    <input id="sellerContact" type="email">
                                 </div>
                                 <div class="col-sm-6 col-12">
                                     <p>Town/City *</p>
-                                    <input type="text">
+                                    <input id="city" type="text">
                                 </div>
                                 <div class="col-12">
                                     <p>State *</p>
-                                    <input type="text">
+                                    <input id="state" type="text" placeholder="NY">
                                 </div>
                                 <div class="col-12">
-                                    <input id="toggle1" type="checkbox">
-                                    <label for="toggle1">Pure CSS Accordion</label>
-                                    <div class="create-account">
-                                        <p>Create an account by entering the information below. If you are a returning customer please login at the top of the page.</p>
-                                        <span>Account password</span>
-                                        <input type="password">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                        <div class=" col-12">
-                                            <p>Name of Item</p>
-                                            <input id="itemName" type="text" />
-                                        </div>
-                                        <div class=" col-12">
-                                            <p>Category</p>
-                                            <input id="category" type="text" />
-                                        </div>
-                                        <div class="col-12">
-                                            <p>Condition</p>
-                                            <input id="conidtion" type="text" />
-                                        </div>
-                                        <div class="col-12">
-                                            <p>Price</p>
-                                            <input id="price" type="text" placeholder="000" />
-                                        </div>
-                                        <div class="col-12">
-                                            <p>Seller Name </p>
-                                            <input id="phone" type="text" placeholder="Your Name Here" />
-                                        </div>
-                                        <div class="col-12">
-                                            <p>Email Address </p>
-                                            <input id="email" type="email" />
-                                        </div>
-                                        <div class="col-12">
-                                            <p>Town / City </p>
-                                            <input id="city" type="text" placeholder="Town / City" />
-                                        </div>
-                                        <div class="col-12">
-                                            <p>State </p>
-                                            <input id="state" type="text" />
-                                        </div>
-                                    </div>
+                                    <p>Image Upload *</p>
+                                    <input type="file" id="image">
                                 </div>
                                 <div class="col-12">
                                     <p>Description </p>
                                     <textarea name="description" placeholder="Description of the item"></textarea>
-                                    <button>Submit</button>
+                                </div>
+                                <div class="col-12">
+                                    <input type="submit">
                                 </div>
                             </div>
                         </form>
@@ -342,6 +269,134 @@
     <script src="assets/js/jquery-ui.min.js"></script>
     <!-- main js -->
     <script src="assets/js/scripts.js"></script>
+    <script>
+        const jsonURL = 'https://jsonblob.com/api/jsonBlob/1347697935206506496';
+
+        document.getElementById("checkout-form").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent the default form submission
+            // Get form data
+            const fileInput = document.getElementById("image");
+            const formData = new FormData();
+
+            // Initialize the itemData structure
+            const itemData = {
+                item_id: 0,  // Assuming you have a function to generate the item ID
+                name: document.getElementById("itemName").value,
+                category: document.getElementById("category").value,
+                description: document.querySelector("textarea[name='description']").value,
+                condition: document.getElementById("condition").value,
+                price: parseFloat(document.getElementById("price").value),
+                currency: "USD",
+                seller: {
+                    name: document.getElementById("sellerName").value,
+                    location: document.getElementById("city").value + ", " + document.getElementById("state").value,
+                    contact: document.getElementById("sellerContact").value
+                },
+                images: [], // Initially empty, to be filled with the image URL
+                date_listed: new Date().toISOString().split('T')[0],
+                location: document.getElementById("city").value + ", " + document.getElementById("state").value,
+                in_cart: false
+            };
+
+            console.log("Form Data to Submit:", itemData);
+
+            // Function to handle image conversion to base64
+            const convertImageToBase64 = (file) => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = function () {
+                        resolve(reader.result);  // This gives us the base64 string
+                    };
+                    reader.onerror = function (error) {
+                        reject("Error reading file: " + error);
+                    };
+                    reader.readAsDataURL(file);  // Read the image as a data URL
+                });
+            };
+
+            // If a file is selected, convert it and append the result to the images array
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                console.log("File selected:", file);
+
+                convertImageToBase64(file).then(base64Image => {
+                    itemData.images.push(base64Image);  // Add the base64 string to the images array
+                    console.log("Base64 Image:", base64Image);
+
+                    // Now submit the item data to JSONBlob
+                    submitItemData(itemData);
+                }).catch(error => {
+                    console.error("Error converting image:", error);
+                    alert("Error converting image: " + error);
+                    // Proceed without the image if conversion fails
+                    submitItemData(itemData);
+                });
+            } else {
+                console.log("No image file selected, proceeding without an image.");
+                // If no image is selected, submit the form without the image
+                submitItemData(itemData);
+            }
+            // Function to handle item submission
+            const submitItemData = (itemData) => {
+                alert('Item Created');
+                updateData(itemData);
+
+                /*
+                let newArray = [];
+                newArray = $.get('https://jsonblob.com/api/jsonBlob/1347697935206506496', function(data, status) {
+                    console.log(data);
+                })
+                if(newArray.data && Array.isArray(newArray.data)){
+                    console.log("is array");
+                } else {
+                    console.log('Not Array');
+                }
+                newArray[0].push(itemData);
+                console.log(newArray);
+                $.ajax({
+                        url: 'https://jsonblob.com/api/jsonBlob/1347697935206506496',
+                        type: 'PUT',
+                        contentType: 'application/json; charset=utf-8',
+                        accept: 'application/json',
+                        dataType: 'json',
+                        data: JSON.stringify(newArray)
+                    });
+                    */
+            };
+            location.reload();
+        });
+        
+        async function updateData(itemData) {
+            const response = await fetch(jsonURL);
+            const existingData = await response.json();
+            console.log(existingData);
+            itemData.item_id = String((parseInt(existingData.items[existingData.items.length - 1].item_id)) + 1);
+            console.log(itemData.item_id);
+            if(Array.isArray(existingData.items)) {
+                console.log('Array');
+                existingData.items.push(itemData);
+            } else if (typeof existingData === 'object' && existingData !== null) {
+                console.log('Not Array');
+                existingData.items.itemData = itemData;
+            } else {
+                console.error('Existing Data is not an array or Object.  Appending is not possible.');
+            }
+
+            const updateResponse = await fetch(jsonURL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(existingData)
+            });
+
+            const updatedData = await updateResponse.json();
+            console.log(updatedData);
+
+        }
+
+    </script>
+    
 </body>
 
 </html>
