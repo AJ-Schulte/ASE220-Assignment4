@@ -254,29 +254,59 @@
                         <img src="" alt="" id="modal-product-image"> 
                     </div>
                     <div class="product-single-content w-50">
-                        <h3 class="name" id="modal-product-name"></h3>
-                        <div class="rating-wrap fix">
-                            <span class="pull-left price" id="modal-product-price"></span>
-                            <span class="pull-right condition" id="modal-product-condition">Condition: </span>
+                        <div id="modal-main">
+                            <h3 class="name" id="modal-product-name"></h3>
+                            <div class="rating-wrap fix">
+                                <span class="pull-left price" id="modal-product-price"></span>
+                                <span class="pull-right condition" id="modal-product-condition">Condition: </span>
+                            </div>
+                            <p class="description" id="modal-product-desctiption"></p>
+                            <ul>
+                                <li class="location pull-left" id="modal-product-location">Location: </li>
+                                <li class="dateListed pull-right" id="modal-product-date">Date Listed: </li> 
+                            </ul>
+                            <br />
+                            <ul class="input-style">
+                                <li class="pull-right"><a id="cart-button" class="add-to-cart">Add to Cart</a></li>
+                            </ul>
+                            <ul class="cetagory">
+                                <li>Categories:</li>
+                                <li id="modal-product-category"></li>
+                            </ul>
+                            <ul class="socil-icon contact">
+                                <li>Seller Contact Information:</li>
+                                <li id="modal-seller-name">Name: </li>
+                                <li id="modal-seller-email">Email: </li>
+                            </ul>
                         </div>
-                        <p class="description" id="modal-product-desctiption"></p>
-                        <ul>
-                            <li class="location pull-left" id="modal-product-location">Location: </li>
-                            <li class="dateListed pull-right" id="modal-product-date">Date Listed: </li> 
-                        </ul>
-                        <br />
-                        <ul class="input-style">
-                            <li class="pull-right"><a id="cart-button" class="add-to-cart">Add to Cart</a></li>
-                        </ul>
-                        <ul class="cetagory">
-                            <li>Categories:</li>
-                            <li id="modal-product-category"></li>
-                        </ul>
-                        <ul class="socil-icon contact">
-                            <li>Seller Contact Information:</li>
-                            <li id="modal-seller-name">Name: </li>
-                            <li id="modal-seller-email">Email: </li>
-                        </ul>
+                        <!-- Editable Form Section -->
+                        <div id="edit-form" hidden>
+                            <ul>
+                                <li>
+                                    <label for="edit-product-name">Product Name:</label>
+                                    <input type="text" id="edit-product-name" class="form-control">
+                                </li>
+                                <li>
+                                    <label for="edit-product-price">Product Price:</label>
+                                    <input type="number" id="edit-product-price" class="form-control">
+                                </li>
+                                <li>
+                                    <label for="edit-product-description">Description:</label>
+                                    <textarea id="edit-product-description" class="form-control"></textarea>
+                                </li>
+                                <li>
+                                    <label for="edit-product-location">Location:</label>
+                                    <input type="text" id="edit-product-location" class="form-control">
+                                </li>
+                                <li>
+                                    <label for="edit-product-category">Category:</label>
+                                    <input type="text" id="edit-product-category" class="form-control">
+                                </li>
+                                <li>
+                                    <a id="save-product-changes" class="form-control active loadmore-btn">Save Changes</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -398,6 +428,9 @@
                     success: function(data) {
                         // Find the product by item_id
                         var product = data.items.find(item => item.item_id === productId);
+                        
+                        document.getElementById('modal-main').removeAttribute("hidden");
+                        document.getElementById('edit-form').hidden = true;
 
                         if (product) {
                             // Populate modal with product data
@@ -450,6 +483,76 @@
                 })
             });
 
+            // Fetch and open the modal with product details
+            $(document).on('click', '.update', function () {
+                const productId = $(this).data('id');
+                
+                // Fetch the product data from the JSON (replace with your real API endpoint)
+                $.getJSON(jsonURL, function (data) {
+                    const product = data.items.find(item => item.item_id === productId);
+
+                    document.getElementById('edit-form').removeAttribute("hidden");
+                    
+                    document.getElementById('modal-main').hidden = true;
+
+                    if (product) {
+                        // Populate the modal with current product data
+                        $('#modal-product-image').attr('src', product.images[0]);
+                        $('#modal-product-name').text(product.name);
+                        $('#modal-product-price').text(product.currency + ' $' + product.price);
+                        $('#modal-product-condition').text('Condition: ' + product.condition);
+                        $('#modal-product-description').text(product.description);
+                        $('#modal-product-location').text('Location: ' + product.location);
+                        $('#modal-product-date').text('Date Listed: ' + product.date_listed);
+                        $('#modal-product-category').text(product.category);
+                        $('#modal-seller-name').text('Name: ' + product.seller.name);
+                        $('#modal-seller-email').text('Email: ' + product.seller.contact);
+                        
+                        // Pre-fill editable fields
+                        $('#edit-product-name').val(product.name);
+                        $('#edit-product-price').val(product.price);
+                        $('#edit-product-description').val(product.description);
+                        $('#edit-product-location').val(product.location);
+                        $('#edit-product-category').val(product.category);
+
+                        // Show the modal
+                        $('#exampleModalCenter').modal('show');
+
+                        // Save the updated product
+                        $('#save-product-changes').on('click', function () {
+                            const updatedProduct = {
+                                item_id: product.item_id,
+                                name: $('#edit-product-name').val(),
+                                price: $('#edit-product-price').val(),
+                                description: $('#edit-product-description').val(),
+                                location: $('#edit-product-location').val(),
+                                category: $('#edit-product-category').val(),
+                                images: product.images,
+                                currency: product.currency,
+                                condition: product.condition,
+                                date_listed: product.date_listed,
+                                seller: product.seller
+                            };
+
+                            // Send updated product data to the server
+                            $.ajax({
+                                url: jsonURL,
+                                method: 'PUT',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ items: data.items.map(item => item.item_id === productId ? updatedProduct : item) }),
+                                success: function (response) {
+                                    alert("Product updated successfully!");
+                                    location.reload(); // Refresh the page to show updated data
+                                },
+                                error: function () {
+                                    alert("Error updating product.");
+                                }
+                            });
+                        });
+                    }
+                });
+            });
+
         });
 
         async function updateCart(productID) {
@@ -498,12 +601,6 @@
                 body: JSON.stringify(existingData)
             });
             location.reload();
-        }
-
-        // Update item function (for demonstration)
-        function updateItem(itemId) {
-            alert("Item with ID " + itemId + " will be updated.");
-            // Add actual update logic here
         }
     </script>
 </body>
