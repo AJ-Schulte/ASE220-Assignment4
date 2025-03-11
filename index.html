@@ -487,7 +487,7 @@
             $(document).on('click', '.update', function () {
                 const productId = $(this).data('id');
                 
-                // Fetch the product data from the JSON (replace with your real API endpoint)
+                // Fetch the product data from the JSON
                 $.getJSON(jsonURL, function (data) {
                     const product = data.items.find(item => item.item_id === productId);
 
@@ -577,7 +577,7 @@
             const updatedData = await updateResponse.json();
         }
 
-        // Delete item function (for demonstration)
+        // Delete item function 
         async function deleteItem(itemName) {
             const response = await fetch(jsonURL);
             const existingData = await response.json();

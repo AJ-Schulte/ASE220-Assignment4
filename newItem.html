@@ -280,7 +280,7 @@
 
             // Initialize the itemData structure
             const itemData = {
-                item_id: 0,  // Assuming you have a function to generate the item ID
+                item_id: 0,  
                 name: document.getElementById("itemName").value,
                 category: document.getElementById("category").value,
                 description: document.querySelector("textarea[name='description']").value,
@@ -340,28 +340,6 @@
             const submitItemData = (itemData) => {
                 alert('Item Created');
                 updateData(itemData);
-
-                /*
-                let newArray = [];
-                newArray = $.get('https://jsonblob.com/api/jsonBlob/1347697935206506496', function(data, status) {
-                    console.log(data);
-                })
-                if(newArray.data && Array.isArray(newArray.data)){
-                    console.log("is array");
-                } else {
-                    console.log('Not Array');
-                }
-                newArray[0].push(itemData);
-                console.log(newArray);
-                $.ajax({
-                        url: 'https://jsonblob.com/api/jsonBlob/1347697935206506496',
-                        type: 'PUT',
-                        contentType: 'application/json; charset=utf-8',
-                        accept: 'application/json',
-                        dataType: 'json',
-                        data: JSON.stringify(newArray)
-                    });
-                    */
             };
             location.reload();
         });

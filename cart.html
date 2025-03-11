@@ -117,7 +117,7 @@
                                     <th class="remove">Remove</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="cart-main">
                                 <!-- Sample Item in Cart
                                     <tr>
                                         <td class="images"><img src="" alt=""></td>
@@ -132,10 +132,7 @@
                             <div class="col-xl-4 col-lg-5 col-md-6 ">
                                 <div class="cartcupon-wrap">
                                     <ul class="d-flex">
-                                        <li>
-                                            <button>Update Cart</button>
-                                        </li>
-                                        <li><a href="shop.html">Continue Shopping</a></li>
+                                        <li><a href="index.html">Continue Shopping</a></li>
                                     </ul>
                                     <h3>Cupon</h3>
                                     <p>Enter Your Cupon Code if You Have One</p>
@@ -149,7 +146,7 @@
                                 <div class="cart-total text-right">
                                     <h3>Cart Total</h3>
                                     <ul>
-                                        <li><span class="pull-left"> Total </span> <span class="pull-right cart-total">$</span></li>
+                                        <li><span class="pull-left"> Total </span> <span class="pull-right cart-total-number">$</span></li>
                                     </ul>
                                     <a href="checkout.html">Proceed to Checkout</a>
                                 </div>
@@ -267,6 +264,72 @@
     <script src="assets/js/jquery-ui.min.js"></script>
     <!-- main js -->
     <script src="assets/js/scripts.js"></script>
+    <script>
+        const jsonURL = 'https://jsonblob.com/api/jsonBlob/1347697935206506496';
+        
+        async function loadCart() {
+            const response = await fetch(jsonURL);
+            const existingData = await response.json();
+            let total = 0;
+
+            for(let i = 0; i < existingData.items.length; i++) {
+                if(existingData.items[i].in_cart) {
+                    const cartItemHTML = `
+                            <tr>
+                                <td class="images"><img src="${existingData.items[i].images[0]}" alt="${existingData.items[i].name}"></td>
+                                <td class="product"><a href="#">${existingData.items[i].name}</a></td>
+                                <td class="price">$${existingData.items[i].price}</td>
+                                <td class="remove"><a href="#" class="removeFromCart" data-id="${existingData.items[i].item_id}"><i class="fa fa-times"></i></a></td>
+                            </tr>
+                    `;
+                    $('#cart-main').append(cartItemHTML);
+                    total += parseInt(existingData.items[i].price);
+                }
+            }
+            $('.cart-total-number').text('$ ' + total);
+
+        };
+
+        async function updateCart(productID) {
+            const response = await fetch(jsonURL);
+            const existingData = await response.json();
+            var product = existingData.items[parseInt(productID) - 1];
+            
+            product.in_cart = false;
+            alert("You have removed " + product.name + " from your cart.");
+            
+            const updateResponse = await fetch(jsonURL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(existingData)
+            });
+
+            const updatedData = await updateResponse.json();
+            location.reload();
+        }
+        
+        $(document).ready(function() {
+            loadCart();
+
+            $(document).on('click', '.removeFromCart', function() {
+                var productId = $(this).data('id');
+
+                $.ajax({
+                    url: jsonURL,
+                    type: 'GET',
+                    success: function(data) {
+                        updateCart(productId);
+                        
+                    }
+                })
+            });
+        });
+
+        
+
+    </script>
 </body>
 
 </html>
