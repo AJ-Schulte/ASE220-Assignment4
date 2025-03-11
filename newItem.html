@@ -341,7 +341,6 @@
                 alert('Item Created');
                 updateData(itemData);
             };
-            location.reload();
         });
         
         async function updateData(itemData) {
@@ -370,7 +369,7 @@
 
             const updatedData = await updateResponse.json();
             console.log(updatedData);
-
+            location.reload();
         }
 
     </script>
