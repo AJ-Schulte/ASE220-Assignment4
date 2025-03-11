@@ -376,7 +376,7 @@
                                 <div class="product-icon flex-style">
                                     <ul>
                                         <li><a class="view-product" data-id="${item.item_id}"><i class="fa fa-eye"></i></a></li>
-                                        <li><a class="add-to-cart" data-id="${item.item_id}"><i class="fa fa-shopping-bag"></i></a></li>
+                                        <li><a class="add-to-cart" data-id="${item.name}"><i class="fa fa-shopping-bag"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -444,7 +444,7 @@
                             $('#modal-product-category').text(product.category);  // Product category
                             $('#modal-seller-name').text('Name: ' + product.seller.name);  // Seller name
                             $('#modal-seller-email').text('Email: ' + product.seller.contact);  // Seller email
-                            $('#cart-button').attr('data-id', product.item_id);
+                            $('#cart-button').attr('data-id', product.name);
 
                             // Trigger the modal to open
                             $('#exampleModalCenter').modal('show');
@@ -558,7 +558,13 @@
         async function updateCart(productID) {
             const response = await fetch(jsonURL);
             const existingData = await response.json();
-            var product = existingData.items[parseInt(productID) - 1];
+            let product;
+            for(let i = 0; i < existingData.items.length; i++) {
+                if(existingData.items[i].name == productID) {
+                    console.log(existingData.items[i].name);
+                    product = existingData.items[i];
+                }
+            };
             if(!product.in_cart) {
                 product.in_cart = true;
                 alert("You have added " + product.name + " to your cart.");
